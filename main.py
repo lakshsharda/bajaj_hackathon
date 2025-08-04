@@ -22,11 +22,11 @@ from io import BytesIO
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Configuration - Direct assignment to avoid .env issues
-PINECONE_API_KEY = "pcsk_2xp1MM_TD5DpfJfkF1yhW2k3bjE6qppBMP7WakP4Cw8ppX8Hdh2PKw7uoJ3jb1sC4e65mK"
-PINECONE_INDEX = "hackrx-index"
-GEMINI_API_KEY = "AIzaSyB41JhMyAVkx_m-Wu9StVHuHQUB1HJxlcQ"
-COHERE_API_KEY = "qZmghdKw7d7YxNryMj57OsMN0jLsQSCy0c7xulRA"
+# Configuration - Use environment variables for Azure deployment
+PINECONE_API_KEY = os.getenv("PINECONE_API_KEY", "pcsk_2xp1MM_TD5DpfJfkF1yhW2k3bjE6qppBMP7WakP4Cw8ppX8Hdh2PKw7uoJ3jb1sC4e65mK")
+PINECONE_INDEX = os.getenv("PINECONE_INDEX", "hackrx-index")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyB41JhMyAVkx_m-Wu9StVHuHQUB1HJxlcQ")
+COHERE_API_KEY = os.getenv("COHERE_API_KEY", "qZmghdKw7d7YxNryMj57OsMN0jLsQSCy0c7xulRA")
 
 # Initialize services
 genai.configure(api_key=GEMINI_API_KEY)
@@ -352,6 +352,34 @@ async def system_info():
         "features": ["Dynamic document processing", "No hardcoding", "Works with any document type", "Semantic search", "Intelligent fallback"]
     }
 
+@app.get("/")
+async def root():
+    return {
+        "message": "HackRx Dynamic API",
+        "endpoints": {
+            "health": "/api/v1/health",
+            "info": "/api/v1/info", 
+            "run": "/api/v1/hackrx/run"
+        },
+        "status": "running"
+    }
+
+@app.get("/docs")
+async def docs():
+    return {
+        "title": "HackRx Dynamic API Documentation",
+        "version": "1.0.0",
+        "description": "LLM-Powered Intelligent Query–Retrieval System for insurance, legal, HR, and compliance domains",
+        "endpoints": {
+            "POST /api/v1/hackrx/run": "Process documents and answer questions",
+            "GET /api/v1/health": "Health check endpoint",
+            "GET /api/v1/info": "System information",
+            "GET /": "Root endpoint with API overview"
+        }
+    }
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    # Use port 8000 for Azure Web App
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
