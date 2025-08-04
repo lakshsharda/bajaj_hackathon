@@ -305,7 +305,7 @@ class DynamicHackRxSystem:
 # Initialize system
 hackrx_system = DynamicHackRxSystem()
 
-@app.post("/api/v1/hackrx/run")
+@app.post("/hackrx/run")
 async def hackrx_run(request: Request):
     """Dynamic endpoint - works with any document and questions"""
     start_time = time.time()
@@ -340,43 +340,9 @@ async def hackrx_run(request: Request):
         logger.error(f"Unexpected error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
 
-@app.get("/api/v1/health")
-async def health_check():
-    return {"status": "healthy", "timestamp": datetime.now().isoformat()}
-
-@app.get("/api/v1/info")
-async def system_info():
-    return {
-        "system": "HackRx Dynamic",
-        "version": "1.0.0",
-        "features": ["Dynamic document processing", "No hardcoding", "Works with any document type", "Semantic search", "Intelligent fallback"]
-    }
-
 @app.get("/")
 async def root():
-    return {
-        "message": "HackRx Dynamic API",
-        "endpoints": {
-            "health": "/api/v1/health",
-            "info": "/api/v1/info", 
-            "run": "/api/v1/hackrx/run"
-        },
-        "status": "running"
-    }
-
-@app.get("/docs")
-async def docs():
-    return {
-        "title": "HackRx Dynamic API Documentation",
-        "version": "1.0.0",
-        "description": "LLM-Powered Intelligent Query–Retrieval System for insurance, legal, HR, and compliance domains",
-        "endpoints": {
-            "POST /api/v1/hackrx/run": "Process documents and answer questions",
-            "GET /api/v1/health": "Health check endpoint",
-            "GET /api/v1/info": "System information",
-            "GET /": "Root endpoint with API overview"
-        }
-    }
+    return {"message": "HackRx API is running", "endpoint": "/hackrx/run"}
 
 if __name__ == "__main__":
     import uvicorn

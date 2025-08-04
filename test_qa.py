@@ -10,8 +10,8 @@ import time
 def test_hackrx_system():
     """Test the HackRx system with the competition format"""
     
-    # Test configuration - Update this URL after deployment
-    url = "https://your-app-name.azurewebsites.net/api/v1/hackrx/run"  # Replace with your actual Azure URL
+    # Test configuration - Your actual Azure Web App URL
+    url = "https://bajaj-cjb6e0hqhcgrg7cd.spaincentral-01.azurewebsites.net/hackrx/run"
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
