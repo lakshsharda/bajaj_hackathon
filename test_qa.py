@@ -11,7 +11,7 @@ def test_hackrx_system():
     """Test the HackRx system with the competition format"""
     
     # Test configuration - Your actual Azure Web App URL
-    url = "https://bajaj-cjb6e0hqhcgrg7cd.spaincentral-01.azurewebsites.net/hackrx/run"
+    url = "https://bajaj3-d9gpa0e6csbdgzhs.canadacentral-01.azurewebsites.net/hackrx/run"
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
